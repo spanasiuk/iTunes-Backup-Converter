@@ -16,6 +16,7 @@ namespace iTunes_Backup_Converter
 
         string currentVersion = "Unknown";
         string backupDefault = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"/Apple Computer/MobileSync/Backup/";
+        List<iOS> iOSVersionsList = new List<iOS>();
 
         public MainForm()
         {
@@ -47,6 +48,11 @@ namespace iTunes_Backup_Converter
                 result.Add(new Backup(folder));
             }
             return result;
+        }
+
+        private void loadiOSDatabase()
+        {
+
         }
     }
 }
