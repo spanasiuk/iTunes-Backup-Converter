@@ -17,7 +17,10 @@ namespace iTunes_Backup_Converter
     {
         string databaseUrl = @"https://en.wikipedia.org/wiki/IOS_version_history";
         string currentVersion = "Unknown";
-        string backupDefault = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"/Apple Computer/MobileSync/Backup/";
+        List<string> backupFolders = new List<string>() {
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"/Apple Computer/MobileSync/Backup/",
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"/Apple/MobileSync/Backup/"
+        };
         public static List<iOS> iOSVersionsList = new List<iOS>();
         FolderBrowserDialog fbdSelectBackup = new FolderBrowserDialog();
 
@@ -25,7 +28,12 @@ namespace iTunes_Backup_Converter
         {
             InitializeComponent();
             loadiOSDatabase();
-            cbBackupName.DataSource = loadBackups(backupDefault);
+            List<Backup> backups = new List<Backup>();
+            foreach (string folder in backupFolders)
+            {
+                backups.AddRange(loadBackups(folder));
+            }
+            cbBackupName.DataSource = backups;
             if (cbBackupName.Items.Count > 0)
             {
                 currentVersion = ((Backup)cbBackupName.SelectedItem).ios.name;
@@ -35,7 +43,8 @@ namespace iTunes_Backup_Converter
             }
             else
             {
-                MessageBox.Show("No backups were found in \"" + backupDefault + "\"", "Error");
+                string notFound = String.Join("\n", backupFolders.ToArray());
+                MessageBox.Show("No backups were found in folders:\n\"" + notFound + "\"", "Error");
                 rbtnSelectFromList.Enabled = false;
                 rbtnManualSelect.Checked = true;
             }
@@ -211,7 +220,12 @@ namespace iTunes_Backup_Converter
         private void reload()
         {
             cbBackupName.DataSource = null;
-            cbBackupName.DataSource = loadBackups(backupDefault);
+            List<Backup> backups = new List<Backup>();
+            foreach (string folder in backupFolders)
+            {
+                backups.AddRange(loadBackups(folder));
+            }
+            cbBackupName.DataSource = backups;
             if (cbBackupName.Items.Count > 0)
             {
                 currentVersion = ((Backup)cbBackupName.SelectedItem).ios.name;

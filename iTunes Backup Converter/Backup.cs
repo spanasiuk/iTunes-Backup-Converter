@@ -32,12 +32,6 @@ namespace iTunes_Backup_Converter
                 device.deviceName = backup.First(s => s.Key == "Device Name").Value;
                 device.deviceType = backup.First(s => s.Key == "Product Name").Value;
                 device.deviceVersion = backup.First(s => s.Key == "Product Type").Value;
-                /*XDocument file = XDocument.Load(path + "/Info.plist");
-                Console.WriteLine(file.Element("Product Version"));
-                foreach (string line in file.Elements())
-                {
-                    Console.WriteLine(line);
-                }*/
             }
             else
             {
