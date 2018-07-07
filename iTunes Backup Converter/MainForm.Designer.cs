@@ -39,11 +39,11 @@
             this.rbtnManualSelect = new System.Windows.Forms.RadioButton();
             this.rbtnSelectFromList = new System.Windows.Forms.RadioButton();
             this.gbVersion = new System.Windows.Forms.GroupBox();
+            this.cbNewVersion = new System.Windows.Forms.ComboBox();
             this.btnConvert = new System.Windows.Forms.Button();
             this.gbAdditional = new System.Windows.Forms.GroupBox();
             this.cbxArchive = new System.Windows.Forms.CheckBox();
             this.cbxBackup = new System.Windows.Forms.CheckBox();
-            this.cbNewVersion = new System.Windows.Forms.ComboBox();
             this.gbSelect.SuspendLayout();
             this.gbVersion.SuspendLayout();
             this.gbAdditional.SuspendLayout();
@@ -157,6 +157,15 @@
             this.gbVersion.TabStop = false;
             this.gbVersion.Text = "Backup iOS version";
             // 
+            // cbNewVersion
+            // 
+            this.cbNewVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNewVersion.FormattingEnabled = true;
+            this.cbNewVersion.Location = new System.Drawing.Point(91, 38);
+            this.cbNewVersion.Name = "cbNewVersion";
+            this.cbNewVersion.Size = new System.Drawing.Size(121, 21);
+            this.cbNewVersion.TabIndex = 8;
+            // 
             // btnConvert
             // 
             this.btnConvert.Enabled = false;
@@ -166,6 +175,7 @@
             this.btnConvert.TabIndex = 10;
             this.btnConvert.Text = "Convert";
             this.btnConvert.UseVisualStyleBackColor = true;
+            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // gbAdditional
             // 
@@ -201,15 +211,6 @@
             this.cbxBackup.TabIndex = 0;
             this.cbxBackup.Text = "Backup original files";
             this.cbxBackup.UseVisualStyleBackColor = true;
-            // 
-            // cbNewVersion
-            // 
-            this.cbNewVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbNewVersion.FormattingEnabled = true;
-            this.cbNewVersion.Location = new System.Drawing.Point(91, 38);
-            this.cbNewVersion.Name = "cbNewVersion";
-            this.cbNewVersion.Size = new System.Drawing.Size(121, 21);
-            this.cbNewVersion.TabIndex = 8;
             // 
             // MainForm
             // 

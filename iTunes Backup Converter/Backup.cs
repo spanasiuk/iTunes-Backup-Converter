@@ -39,6 +39,32 @@ namespace iTunes_Backup_Converter
                     Console.WriteLine(line);
                 }*/
             }
+            else
+            {
+                throw new ArgumentException("\"Info.plist\" not found");
+            }
+        }
+
+        public void changeiOSto(iOS newiOS, bool backItUp, bool archive)
+        {
+            if (File.Exists(path + "/Info.plist"))
+            {
+                if (backItUp)
+                    File.Copy(path + "/Info.plist", path + "/Info - " + DateTime.Now.ToString().Replace(":","-") + ".plist");
+                if (archive)
+                {
+                    DirectoryInfo dir = new DirectoryInfo(path);
+                    string newPath = dir.FullName.Replace("\\" + dir.Name, "") + "/" + dir.Name + " - " + DateTime.Now.ToString().Replace(":", "-");
+                    Directory.Move(path, newPath);
+                    path = newPath;
+                }
+                string text = File.ReadAllText(path + "/Info.plist");
+                text = text.Replace(ios.version, newiOS.version);
+                text = text.Replace(ios.buildNumber, newiOS.buildNumber);
+                File.WriteAllText(path + "/Info.plist", text);
+            }
+            else
+                throw new ArgumentException("File \"" + path + "/Info.plist" + "\" not found");
         }
 
         public override string ToString()

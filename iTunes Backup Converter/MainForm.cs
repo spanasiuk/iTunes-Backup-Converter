@@ -33,6 +33,12 @@ namespace iTunes_Backup_Converter
                 cbBackupName.SelectedIndex = 0;
                 fixAll();
             }
+            else
+            {
+                MessageBox.Show("No backups were found in \"" + backupDefault + "\"", "Error");
+                rbtnSelectFromList.Enabled = false;
+                rbtnManualSelect.Checked = true;
+            }
         }
 
         private void backUpSelect_CheckedChanged(object sender, EventArgs e)
@@ -56,7 +62,11 @@ namespace iTunes_Backup_Converter
             List<Backup> result = new List<Backup>();
             foreach (string folder in Directory.GetDirectories(path))
             {
-                result.Add(new Backup(folder));
+                try
+                {
+                    result.Add(new Backup(folder));
+                }
+                catch { }
             }
             return result;
         }
@@ -146,32 +156,74 @@ namespace iTunes_Backup_Converter
         {
             if (fbdSelectBackup.ShowDialog() == DialogResult.OK)
             {
-                Backup bp = new Backup(fbdSelectBackup.SelectedPath);
-                if (bp.name != null)
+                try
                 {
-                    txbSelectedPath.Text = fbdSelectBackup.SelectedPath;
-                    txbSelectedPath.Tag = bp;
-                    currentVersion = bp.ios.name;
-                    lbCurrent.Tag = bp;
-                    fixAll();
+                    Backup bp = new Backup(fbdSelectBackup.SelectedPath);
+                    if (bp.name != null)
+                    {
+                        txbSelectedPath.Text = fbdSelectBackup.SelectedPath;
+                        txbSelectedPath.Tag = bp;
+                        currentVersion = bp.ios.name;
+                        lbCurrent.Tag = bp;
+                        fixAll();
+                    }
+                }
+                catch (Exception q)
+                {
+                    MessageBox.Show(q.Message, "Error");
                 }
             }
         }
 
         private void cbBackupName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            currentVersion = ((Backup)cbBackupName.SelectedItem).ios.name;
-            lbCurrent.Tag = cbBackupName.SelectedItem;
-            cbNewVersion.Items.Clear();
-            for (int i = 0; i < iOSVersionsList.FindIndex(s => s.version == ((Backup)lbCurrent.Tag).ios.version); i++)
+            if (cbBackupName.SelectedItem != null)
             {
-                cbNewVersion.Items.Insert(0, iOSVersionsList[i]);
-                if (cbNewVersion.Items.Count > 0)
+                currentVersion = ((Backup)cbBackupName.SelectedItem).ios.name;
+                lbCurrent.Tag = cbBackupName.SelectedItem;
+                cbNewVersion.Items.Clear();
+                for (int i = 0; i < iOSVersionsList.FindIndex(s => s.version == ((Backup)lbCurrent.Tag).ios.version); i++)
                 {
-                    cbNewVersion.SelectedIndex = 0;
+                    cbNewVersion.Items.Insert(0, iOSVersionsList[i]);
+                    if (cbNewVersion.Items.Count > 0)
+                    {
+                        cbNewVersion.SelectedIndex = 0;
+                    }
                 }
             }
             fixAll();
+        }
+
+        private void btnConvert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ((Backup)lbCurrent.Tag).changeiOSto(((iOS)cbNewVersion.SelectedItem), cbxBackup.Checked, cbxArchive.Checked);
+                MessageBox.Show("Convertion complete!\nNow you can restore your device from this backup!", "Success");
+            }
+            catch(Exception q)
+            {
+                MessageBox.Show(q.Message, "Error");
+            }
+            reload();
+        }
+
+        private void reload()
+        {
+            cbBackupName.DataSource = null;
+            cbBackupName.DataSource = loadBackups(backupDefault);
+            if (cbBackupName.Items.Count > 0)
+            {
+                currentVersion = ((Backup)cbBackupName.SelectedItem).ios.name;
+                lbCurrent.Tag = cbBackupName.SelectedItem;
+                cbBackupName.SelectedIndex = 0;
+                fixAll();
+            }
+            else
+            {
+                rbtnSelectFromList.Enabled = false;
+                rbtnManualSelect.Checked = true;
+            }
         }
     }
 }
