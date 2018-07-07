@@ -11,8 +11,6 @@ namespace iTunes_Backup_Converter
         public string name;
         public string version;
         public string buildNumber;
-        public bool specific;
-        public List<string> specificDevices;
 
         public override string ToString()
         {

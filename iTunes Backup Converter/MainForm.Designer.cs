@@ -31,10 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnSelectPath = new System.Windows.Forms.Button();
             this.lbCurrent = new System.Windows.Forms.Label();
-            this.dudBackupName = new System.Windows.Forms.DomainUpDown();
-            this.dudNewVersion = new System.Windows.Forms.DomainUpDown();
             this.lbChangeTo = new System.Windows.Forms.Label();
             this.gbSelect = new System.Windows.Forms.GroupBox();
+            this.cbBackupName = new System.Windows.Forms.ComboBox();
             this.txbSelectedPath = new System.Windows.Forms.TextBox();
             this.lbOr = new System.Windows.Forms.Label();
             this.rbtnManualSelect = new System.Windows.Forms.RadioButton();
@@ -44,6 +43,7 @@
             this.gbAdditional = new System.Windows.Forms.GroupBox();
             this.cbxArchive = new System.Windows.Forms.CheckBox();
             this.cbxBackup = new System.Windows.Forms.CheckBox();
+            this.cbNewVersion = new System.Windows.Forms.ComboBox();
             this.gbSelect.SuspendLayout();
             this.gbVersion.SuspendLayout();
             this.gbAdditional.SuspendLayout();
@@ -51,12 +51,13 @@
             // 
             // btnSelectPath
             // 
-            this.btnSelectPath.Location = new System.Drawing.Point(270, 75);
+            this.btnSelectPath.Location = new System.Drawing.Point(270, 102);
             this.btnSelectPath.Name = "btnSelectPath";
             this.btnSelectPath.Size = new System.Drawing.Size(25, 23);
             this.btnSelectPath.TabIndex = 2;
             this.btnSelectPath.Text = "...";
             this.btnSelectPath.UseVisualStyleBackColor = true;
+            this.btnSelectPath.Click += new System.EventHandler(this.btnSelectPath_Click);
             // 
             // lbCurrent
             // 
@@ -66,24 +67,6 @@
             this.lbCurrent.Size = new System.Drawing.Size(81, 13);
             this.lbCurrent.TabIndex = 3;
             this.lbCurrent.Text = "Current version:";
-            // 
-            // dudBackupName
-            // 
-            this.dudBackupName.BackColor = System.Drawing.Color.White;
-            this.dudBackupName.Location = new System.Drawing.Point(159, 19);
-            this.dudBackupName.Name = "dudBackupName";
-            this.dudBackupName.ReadOnly = true;
-            this.dudBackupName.Size = new System.Drawing.Size(136, 20);
-            this.dudBackupName.TabIndex = 4;
-            // 
-            // dudNewVersion
-            // 
-            this.dudNewVersion.BackColor = System.Drawing.Color.White;
-            this.dudNewVersion.Location = new System.Drawing.Point(91, 39);
-            this.dudNewVersion.Name = "dudNewVersion";
-            this.dudNewVersion.ReadOnly = true;
-            this.dudNewVersion.Size = new System.Drawing.Size(91, 20);
-            this.dudNewVersion.TabIndex = 6;
             // 
             // lbChangeTo
             // 
@@ -96,23 +79,34 @@
             // 
             // gbSelect
             // 
+            this.gbSelect.Controls.Add(this.cbBackupName);
             this.gbSelect.Controls.Add(this.txbSelectedPath);
             this.gbSelect.Controls.Add(this.lbOr);
             this.gbSelect.Controls.Add(this.rbtnManualSelect);
             this.gbSelect.Controls.Add(this.rbtnSelectFromList);
             this.gbSelect.Controls.Add(this.btnSelectPath);
-            this.gbSelect.Controls.Add(this.dudBackupName);
             this.gbSelect.Location = new System.Drawing.Point(12, 12);
             this.gbSelect.Name = "gbSelect";
-            this.gbSelect.Size = new System.Drawing.Size(301, 104);
+            this.gbSelect.Size = new System.Drawing.Size(301, 133);
             this.gbSelect.TabIndex = 8;
             this.gbSelect.TabStop = false;
             this.gbSelect.Text = "Select backup";
             // 
+            // cbBackupName
+            // 
+            this.cbBackupName.BackColor = System.Drawing.Color.White;
+            this.cbBackupName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBackupName.FormattingEnabled = true;
+            this.cbBackupName.Location = new System.Drawing.Point(21, 42);
+            this.cbBackupName.Name = "cbBackupName";
+            this.cbBackupName.Size = new System.Drawing.Size(274, 21);
+            this.cbBackupName.TabIndex = 6;
+            this.cbBackupName.SelectedIndexChanged += new System.EventHandler(this.cbBackupName_SelectedIndexChanged);
+            // 
             // txbSelectedPath
             // 
             this.txbSelectedPath.BackColor = System.Drawing.Color.White;
-            this.txbSelectedPath.Location = new System.Drawing.Point(21, 77);
+            this.txbSelectedPath.Location = new System.Drawing.Point(21, 104);
             this.txbSelectedPath.Name = "txbSelectedPath";
             this.txbSelectedPath.ReadOnly = true;
             this.txbSelectedPath.Size = new System.Drawing.Size(243, 20);
@@ -121,7 +115,7 @@
             // lbOr
             // 
             this.lbOr.AutoSize = true;
-            this.lbOr.Location = new System.Drawing.Point(66, 39);
+            this.lbOr.Location = new System.Drawing.Point(66, 66);
             this.lbOr.Name = "lbOr";
             this.lbOr.Size = new System.Drawing.Size(40, 13);
             this.lbOr.TabIndex = 2;
@@ -130,7 +124,7 @@
             // rbtnManualSelect
             // 
             this.rbtnManualSelect.AutoSize = true;
-            this.rbtnManualSelect.Location = new System.Drawing.Point(21, 55);
+            this.rbtnManualSelect.Location = new System.Drawing.Point(21, 82);
             this.rbtnManualSelect.Name = "rbtnManualSelect";
             this.rbtnManualSelect.Size = new System.Drawing.Size(137, 17);
             this.rbtnManualSelect.TabIndex = 1;
@@ -153,10 +147,10 @@
             // 
             // gbVersion
             // 
+            this.gbVersion.Controls.Add(this.cbNewVersion);
             this.gbVersion.Controls.Add(this.lbCurrent);
-            this.gbVersion.Controls.Add(this.dudNewVersion);
             this.gbVersion.Controls.Add(this.lbChangeTo);
-            this.gbVersion.Location = new System.Drawing.Point(12, 122);
+            this.gbVersion.Location = new System.Drawing.Point(11, 151);
             this.gbVersion.Name = "gbVersion";
             this.gbVersion.Size = new System.Drawing.Size(301, 65);
             this.gbVersion.TabIndex = 9;
@@ -165,7 +159,8 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(125, 262);
+            this.btnConvert.Enabled = false;
+            this.btnConvert.Location = new System.Drawing.Point(124, 291);
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Size = new System.Drawing.Size(75, 23);
             this.btnConvert.TabIndex = 10;
@@ -176,7 +171,7 @@
             // 
             this.gbAdditional.Controls.Add(this.cbxArchive);
             this.gbAdditional.Controls.Add(this.cbxBackup);
-            this.gbAdditional.Location = new System.Drawing.Point(12, 193);
+            this.gbAdditional.Location = new System.Drawing.Point(11, 222);
             this.gbAdditional.Name = "gbAdditional";
             this.gbAdditional.Size = new System.Drawing.Size(301, 63);
             this.gbAdditional.TabIndex = 11;
@@ -207,11 +202,20 @@
             this.cbxBackup.Text = "Backup original files";
             this.cbxBackup.UseVisualStyleBackColor = true;
             // 
+            // cbNewVersion
+            // 
+            this.cbNewVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNewVersion.FormattingEnabled = true;
+            this.cbNewVersion.Location = new System.Drawing.Point(91, 38);
+            this.cbNewVersion.Name = "cbNewVersion";
+            this.cbNewVersion.Size = new System.Drawing.Size(121, 21);
+            this.cbNewVersion.TabIndex = 8;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(324, 289);
+            this.ClientSize = new System.Drawing.Size(324, 319);
             this.Controls.Add(this.gbAdditional);
             this.Controls.Add(this.btnConvert);
             this.Controls.Add(this.gbVersion);
@@ -235,8 +239,6 @@
         #endregion
         private System.Windows.Forms.Button btnSelectPath;
         private System.Windows.Forms.Label lbCurrent;
-        private System.Windows.Forms.DomainUpDown dudBackupName;
-        private System.Windows.Forms.DomainUpDown dudNewVersion;
         private System.Windows.Forms.Label lbChangeTo;
         private System.Windows.Forms.GroupBox gbSelect;
         private System.Windows.Forms.TextBox txbSelectedPath;
@@ -248,6 +250,8 @@
         private System.Windows.Forms.GroupBox gbAdditional;
         private System.Windows.Forms.CheckBox cbxArchive;
         private System.Windows.Forms.CheckBox cbxBackup;
+        private System.Windows.Forms.ComboBox cbBackupName;
+        private System.Windows.Forms.ComboBox cbNewVersion;
     }
 }
 

@@ -26,9 +26,9 @@ namespace iTunes_Backup_Converter
                 name = new DirectoryInfo(path).Name;
                 this.path = path;
                 date = backup.First(s => s.Key == "Last Backup Date").Value;
-                ios.name = "iOS 12.0";
                 ios.buildNumber = backup.First(s => s.Key == "Build Version").Value;
                 ios.version = backup.First(s => s.Key == "Product Version").Value;
+                ios.name = MainForm.iOSVersionsList.First(s => s.version == ios.version).name;
                 device.deviceName = backup.First(s => s.Key == "Device Name").Value;
                 device.deviceType = backup.First(s => s.Key == "Product Name").Value;
                 device.deviceVersion = backup.First(s => s.Key == "Product Type").Value;
