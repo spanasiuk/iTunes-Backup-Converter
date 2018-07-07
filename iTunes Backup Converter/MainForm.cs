@@ -94,7 +94,7 @@ namespace iTunes_Backup_Converter
                 response.Close();
                 readStream.Close();
 
-                MatchCollection rawData = Regex.Matches(html, "<tr valign=\"top\"\\s*(..+?)\\s</td>", RegexOptions.Singleline);
+                MatchCollection rawData = Regex.Matches(html, "<tr valign=\"top\"(.+?)</td>", RegexOptions.Singleline);
                 foreach (Match m in rawData)
                 {
                     iOS ios = new iOS();
